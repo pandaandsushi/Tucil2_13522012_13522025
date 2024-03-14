@@ -21,7 +21,7 @@ def deleteganjil(list):
 num_of_iteration = int(input("Masukkan jumlah iterasi: "))
 
 num_of_control_points = 3
-control_points = [(0,0),(2.5,2.5),(5,0)]
+control_points = [(0,0),(-4,2.5),(5,0.5)]
 
 garban = 0
 garisbantu = []
@@ -40,57 +40,67 @@ for i in range(num_of_iteration-1):
     bag1= titik[:length+1]
     bag2= titik[length:]
     
-    for i in range(0,len(bag1)//2+1,2):
-        # nanti dibenrin lah ini masih manual
-        garban2 = garban
-        mid1 = []
-        mid2 = []
-        print("titik sbelum",titik)
-        for i in range(0,len(bag1)-1,2):
-            garisbantu.append(midpoint(bag1[i],bag1[i+1]))
-            garisbantu.append(midpoint(bag1[i+1],bag1[i+2]))
-            garisbantu.append(midpoint(bag2[i],bag2[i+1]))
-            garisbantu.append(midpoint(bag2[i+1],bag2[i+2]))
+    b1 = 0
+    b2 = 0
 
-        for i in range(garban,len(garisbantu)-3,4):
-            mid1.append(midpoint(garisbantu[i],garisbantu[i+1]))
-            print(midpoint(garisbantu[i],garisbantu[i+1]))
-            mid2.append(midpoint(garisbantu[i+2],garisbantu[i+3]))
-            print(midpoint(garisbantu[i+2],garisbantu[i+3]))
-            garban+=4
+    # nanti dibenrin lah ini masih manual
+    garban2 = garban
+    mid1 = []
+    mid2 = []
 
-        print("mid 1",mid1)
-        print("mid 2",mid2)
-        deleteganjil(titik)
-        print("titik2",titik)
-        j=1
-        for i in range(len(mid1)):
-            if(mid1[i] not in titik):
-                titik.insert(j,mid1[i])
-                j+=2
-        
-        j=1
-        for i in range(len(mid1)):
-            if(mid2[i] not in titik):
-                titik.insert(j+length,mid2[i])
-                j+=2
+    print(bag1,bag2)
+    print("first",garisbantu)
+    print("")
 
-        j = garban2
-        print(titik)
-        print("ini garis bantu",garisbantu)
-        print("")
-        for i in range(1,len(titik)+len(garisbantu)-j,2):
-            titik.insert(i,garisbantu[garban2])
-            garban2+=1
-        
-        print(titik)
-        print("")
+    for i in range(len(bag1)//2):
+        garisbantu.append(midpoint(bag1[b1],bag1[b1+1]))
+        garisbantu.append(midpoint(bag1[b1+1],bag1[b1+2]))
+        b1+=2
+
+    for i in range(len(bag1)//2):
+        garisbantu.append(midpoint(bag2[b2],bag2[b2+1]))
+        garisbantu.append(midpoint(bag2[b2+1],bag2[b2+2]))
+        b2+=2
+
+    print("second",garisbantu)
+
+    for i in range(garban,b1+garban,2):
+        mid1.append(midpoint(garisbantu[i],garisbantu[i+1]))
+        print(midpoint(garisbantu[i],garisbantu[i+1]))
+        garban+=2
+    
+    for i in range(garban,len(garisbantu),2):
+        mid2.append(midpoint(garisbantu[i],garisbantu[i+1]))
+        print(midpoint(garisbantu[i],garisbantu[i+1]))
+        garban+=2
+
+    deleteganjil(titik)
+    print("mid1",mid1)
+    print("mid2",mid2)
+    j=1
+    for i in range(len(mid1)):
+        if(mid1[i] not in titik):
+            titik.insert(j,mid1[i])
+            j+=2
+    
+    j=1
+    for i in range(len(mid1)):
+        if(mid2[i] not in titik):
+            titik.insert(j+length,mid2[i])
+            j+=2
+
+    j = garban2
+
+    for i in range(1,len(titik)+len(garisbantu)-j,2):
+        titik.insert(i,garisbantu[garban2])
+        garban2+=1
+    # titik.sort(key=lambda p: p[0])
+    print(titik)
 
 
 # Mengambil koordinat x dan y dari semua titik
 titik2 = titik
 deleteganjil(titik2)
-titik2.sort(key=lambda p: p[0])
 print(titik2)
 x = [p[0] for p in titik2]
 y = [p[1] for p in titik2]
@@ -109,7 +119,7 @@ for i in range(0,len(garisbantu),2):
     y3.append(garisbantu[i][1])
     y3.append(garisbantu[i+1][1])
     plt.plot(x3, y3, 'yo-',markersize=3)
-# plt.plot(x, y, 'ro-')  
+plt.plot(x, y, 'ro-')  
 plt.xlabel('X')
 plt.ylabel('Y')
 plt.title('Iterasi Titik-titik')

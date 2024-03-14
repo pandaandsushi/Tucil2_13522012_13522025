@@ -12,16 +12,10 @@ def deleteganjil(list):
     for i in sorted(hapus, reverse=True):
         del list[i]
 
-# num_of_control_points = int(input("Jumlah titik kontrol: "))
-# control_points = []
-# for i in range (num_of_control_points):
-#     x = float(input("Nilai x ke-" + str(i) + ": " ))
-#     y = float(input("Nilai y ke-" + str(i) + ": " ))
-#     control_points.append((x,y))
 num_of_iteration = int(input("Masukkan jumlah iterasi: "))
-
 num_of_control_points = 3
 control_points = [(0,0),(-4,2.5),(5,0.5)]
+initial_control_points = control_points.copy()  # Make a copy of the original control points
 
 garban = 0
 garisbantu = []
@@ -35,7 +29,33 @@ titik.append(midpoint(garisbantu[0],garisbantu[1]))
 titik.append(garisbantu[1])
 titik.append(control_points[2])
 
+# Function to plot Bezier curve
+def plot_bezier_curve(titik):
+    plt.grid(True)
+    plt.plot([p[0] for p in initial_control_points], [p[1] for p in initial_control_points], 'bo-', label='Control Points') 
+    for i in range(0,len(garisbantu),2):
+        plt.plot([garisbantu[i][0], garisbantu[i+1][0]], [garisbantu[i][1], garisbantu[i+1][1]], 'yo-', markersize=3)
+    for i in range(len(titik)-1):
+        x_values = [titik[i][0], titik[i+1][0]]
+        y_values = [titik[i][1], titik[i+1][1]]
+        plt.plot(x_values, y_values, 'r-')
+
+# Plotting initial control points and intermediate points
+plt.plot([p[0] for p in initial_control_points], [p[1] for p in initial_control_points], 'bo-', label='Control Points') 
+for i in range(0,len(garisbantu),2):
+    plt.plot([garisbantu[i][0], garisbantu[i+1][0]], [garisbantu[i][1], garisbantu[i+1][1]], 'yo-', markersize=3)
+
+plt.xlabel('X')
+plt.ylabel('Y')
+plt.title('Iterasi Titik-titik')
+plt.legend()
+
+# Plotting Bezier curve for each iteration
 for i in range(num_of_iteration-1):
+    plot_bezier_curve(titik)
+    plt.pause(1) 
+    plt.clf()  # Clear plot for the next iteration
+
     length = len(titik)//2
     bag1= titik[:length+1]
     bag2= titik[length:]
@@ -43,14 +63,9 @@ for i in range(num_of_iteration-1):
     b1 = 0
     b2 = 0
 
-    # nanti dibenrin lah ini masih manual
     garban2 = garban
     mid1 = []
     mid2 = []
-
-    print(bag1,bag2)
-    print("first",garisbantu)
-    print("")
 
     for i in range(len(bag1)//2):
         garisbantu.append(midpoint(bag1[b1],bag1[b1+1]))
@@ -62,21 +77,16 @@ for i in range(num_of_iteration-1):
         garisbantu.append(midpoint(bag2[b2+1],bag2[b2+2]))
         b2+=2
 
-    print("second",garisbantu)
-
     for i in range(garban,b1+garban,2):
         mid1.append(midpoint(garisbantu[i],garisbantu[i+1]))
-        print(midpoint(garisbantu[i],garisbantu[i+1]))
         garban+=2
     
     for i in range(garban,len(garisbantu),2):
         mid2.append(midpoint(garisbantu[i],garisbantu[i+1]))
-        print(midpoint(garisbantu[i],garisbantu[i+1]))
         garban+=2
 
     deleteganjil(titik)
-    print("mid1",mid1)
-    print("mid2",mid2)
+
     j=1
     for i in range(len(mid1)):
         if(mid1[i] not in titik):
@@ -94,34 +104,11 @@ for i in range(num_of_iteration-1):
     for i in range(1,len(titik)+len(garisbantu)-j,2):
         titik.insert(i,garisbantu[garban2])
         garban2+=1
-    # titik.sort(key=lambda p: p[0])
-    print(titik)
 
-
-# Mengambil koordinat x dan y dari semua titik
-titik2 = titik
-deleteganjil(titik2)
-print(titik2)
-x = [p[0] for p in titik2]
-y = [p[1] for p in titik2]
-
-x2 = [p[0] for p in control_points]
-y2 = [p[1] for p in control_points]
-
-# Menampilkan titik-titik dan garis-garis antara titik-titik
-plt.plot(x2, y2, 'bo-') 
-for i in range(0,len(garisbantu),2):
-    x3 = []
-    y3 = []
-    x3.append(garisbantu[i][0])
-    x3.append(garisbantu[i+1][0])
-
-    y3.append(garisbantu[i][1])
-    y3.append(garisbantu[i+1][1])
-    plt.plot(x3, y3, 'yo-',markersize=3)
-plt.plot(x, y, 'ro-')  
+# Final Bezier curve
+plot_bezier_curve(titik)
 plt.xlabel('X')
 plt.ylabel('Y')
-plt.title('Iterasi Titik-titik')
+plt.title('Final Bezier Curve')
 plt.grid(True)
 plt.show()

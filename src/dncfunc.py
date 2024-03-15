@@ -36,8 +36,8 @@ start_time = time.time()
 
 # temporary
 # num_of_iteration = int(input("Masukkan jumlah iterasi: "))
-# num_of_control_points = 5
-# control_points = [(0,0),(-4,2.5),(5,3),(7,0),(10,5)]
+# num_of_control_points = 6
+# control_points = [(0,0),(-4,2.5),(5,3),(7,0),(10,5),(11,2)]
 
 initial_control_points = control_points.copy()  # Make a copy of the original control points
 garban = firstinitiation(control_points)
@@ -140,7 +140,7 @@ elapsed_time = end_time - start_time
 print("\n" + str(elapsed_time) + " ms\n")
 # Final Bezier curve
 deleteganjil(titik)
-plot_bezier_curve(titik2)
+plot_bezier_curve(titik)
 plt.xlabel('X')
 plt.ylabel('Y')
 plt.title('Final Bezier Curve')

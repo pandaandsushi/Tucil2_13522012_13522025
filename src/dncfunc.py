@@ -1,11 +1,14 @@
 import matplotlib.pyplot as plt
-
+import functions as fn
+import time
 titik = []
 garisbantu = []
-
+# Find the midpoint between two points 
 def midpoint(p1, p2):
     return[(p1[0] + p2[0]) / 2, (p1[1] + p2[1]) / 2]
 
+# Function to delete odd indexed elements in a list
+# List starts from index 0
 def deleteganjil(list):
     hapus = []
     for i in range(1, len(list), 2):
@@ -27,16 +30,20 @@ def firstinitiation(control_points):
     titik.append(control_points[len(control_points)-1])
 
     return garban
+# getting the inputs
+num_of_control_points,control_points,num_of_iteration = fn.takeinput()
+start_time = time.time()
 
-num_of_iteration = int(input("Masukkan jumlah iterasi: "))
-num_of_control_points = 5
-control_points = [(0,0),(-4,2.5),(5,3),(7,0),(10,5)]
+# temporary
+# num_of_iteration = int(input("Masukkan jumlah iterasi: "))
+# num_of_control_points = 5
+# control_points = [(0,0),(-4,2.5),(5,3),(7,0),(10,5)]
+
 initial_control_points = control_points.copy()  # Make a copy of the original control points
+garban = firstinitiation(control_points)
 
-garban =firstinitiation(control_points)
-
-print(titik)
-print(garban)
+# print(titik)
+# print(garban)
 # Function to plot Bezier curve
 def plot_bezier_curve(titik):
     plt.grid(True)
@@ -59,20 +66,20 @@ for i in range(num_of_control_points-2):
 titik2 = titik.copy()
 deleteganjil(titik2)
 plot_bezier_curve(titik2)
-plt.pause(1) 
+plt.pause(0.5) 
 plt.clf()
 
-plt.xlabel('X')
-plt.ylabel('Y')
-plt.title('Iterasi Titik-titik')
-plt.legend()
 
 # Plotting Bezier curve for each iteration
 for i in range(num_of_iteration-1):
     titik2 = titik.copy()
     deleteganjil(titik2)
     plot_bezier_curve(titik2)
-    plt.pause(1) 
+    plt.xlabel('X')
+    plt.ylabel('Y')
+    plt.title('Iterasi Titik-titik')
+    plt.legend()
+    plt.pause(0.5) 
     plt.clf()  # Clear plot for the next iteration
 
     length = len(titik)//2
@@ -86,7 +93,7 @@ for i in range(num_of_iteration-1):
     mid1 = []
     mid2 = []
 
-    print(bag1,bag2)
+    # print(bag1,bag2)
 
     for i in range(len(bag1)-1):
         garisbantu.append(midpoint(bag1[b1],bag1[b1+1]))
@@ -104,7 +111,7 @@ for i in range(num_of_iteration-1):
         mid2.append(midpoint(garisbantu[i],garisbantu[i+1]))
         garban+=2
 
-    print(mid1,mid2)
+    # print(mid1,mid2)
     deleteganjil(titik)
 
     j=1
@@ -128,10 +135,11 @@ for i in range(num_of_iteration-1):
     for i in range(1,len(titik)+len(garisbantu)-j,2):
         titik.insert(i,garisbantu[garban2])
         garban2+=1
-
+end_time = time.time()
+elapsed_time = end_time - start_time
+print("\n" + str(elapsed_time) + " ms\n")
 # Final Bezier curve
-titik2 = titik.copy()
-deleteganjil(titik2)
+deleteganjil(titik)
 plot_bezier_curve(titik2)
 plt.xlabel('X')
 plt.ylabel('Y')

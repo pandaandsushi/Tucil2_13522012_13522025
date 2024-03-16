@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import functions as fn
-import time
+import timeit
 
 def formula(num_of_points):
     list = [1]       
@@ -19,23 +19,17 @@ def inbetween(t,list_of_points):
     return ((Rox,Roy))
 
 num_of_control_points,control_points,num_of_iteration = fn.takeinput()
-start_time = time.time()
-
+start = timeit.default_timer()
 # temporary
-# num_of_control_points = 3
-# control_points = [(0,0),(-4,2.5),(5,3),(7,0),(10,5)]
+# num_of_control_points = 5
+# control_points = [(-2,-3),(-3,-2),(0,-2),(1,-3),(2,1)]
 # num_of_iteration = 20
 res = []
 t_val = np.linspace(0, 1, num_of_iteration)
 
 for i in range (len(t_val)):
-    print("Titik ke -",i)
     res.append(inbetween(t_val[i],control_points))
 
-end_time = time.time()
-elapsed_time = end_time - start_time
-
-print(str(elapsed_time) + " ms\n")
 
 # Draw the curve
 plt.figure()
@@ -52,6 +46,10 @@ for i in range(1, len(points)):
     plt.plot(x_values, y_values, marker='o', color='blue')
     plt.pause(0.5)  # Pause for a short duration
 
+end = timeit.default_timer()
+elapsed_time = end - start
+
+print(str(elapsed_time) + " ms\n")
 # Plot final curve
 x_values = [point[0] for point in points]
 y_values = [point[1] for point in points]

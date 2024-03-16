@@ -1,4 +1,4 @@
-# Tucil 2 Stima - Drawing Bezier Curve with Divide and Conquer Algorithm
+# Tucil 2 Stima - Drawing N-points Bezier Curve with Divide and Conquer Algorithm and Brute Force
 
 | Names                     | NIM      |
 | ----------------------    |:--------:|
@@ -13,16 +13,23 @@
 * [How To Use](#how-to-use-🪄)
 
 ## Description 👾
-Create Bézier Curves with Midpoint Algorithm Based on Divide and Conquer
+Create Bézier Curves with Midpoint Algorithm Based on Divide and Conquer and Brute Force
 
 ## Requirements 🫧
+- matplotlib `pip install matplotlib`
+- numpy `pip install numpy`
 
 ## Setting Up 🍀
 - Clone this repository on your terminal `git clone https://github.com/pandaandsushi/Tucil2_13522012_13522025.git`
-- Install all requirements
 
 ## How to Run 🌿
+- Open a code editor, for now we use VSCode
+- Open the desired algorithm to use Divide and Conquer (dncfunc.py) or Brute Force (BF.py)
+- Run the code with the arrow button top right of the screen, or use `Ctrl + Alt + N`
 
 ## How to Use 🪄
+- Enter the number of control points
+- Enter every point coordinates 
+- Enter iteration number
 
 ## Thankyou for trying our program :>

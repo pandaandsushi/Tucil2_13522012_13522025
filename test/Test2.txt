@@ -1,0 +1,4 @@
+num_of_control_points = 3
+control_points = [(0,0),(-4,2.5),(5,3)]
+num_of_iteration = 10 (BF)
+num_of_iteration = 4 (DNC)

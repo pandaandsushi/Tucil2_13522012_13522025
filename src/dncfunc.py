@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import functions as fn
-import time
+import timeit
 titik = []
 garisbantu = []
 # Find the midpoint between two points 
@@ -30,15 +30,15 @@ def firstinitiation(control_points):
     titik.append(control_points[len(control_points)-1])
 
     return garban
+    
 # getting the inputs
 num_of_control_points,control_points,num_of_iteration = fn.takeinput()
-start_time = time.time()
 
 # temporary
 # num_of_iteration = int(input("Masukkan jumlah iterasi: "))
-# num_of_control_points = 6
-# control_points = [(0,0),(-4,2.5),(5,3),(7,0),(10,5),(11,2)]
-
+# num_of_control_points = 10
+# control_points = [(0, 0), (1, 1), (2, 3), (4, 1), (5, 2), (6, 1), (7, 2), (8, 3), (9, 1), (10, 0)]
+start = timeit.default_timer()
 initial_control_points = control_points.copy()  # Make a copy of the original control points
 garban = firstinitiation(control_points)
 
@@ -59,15 +59,15 @@ def plot_bezier_curve(titik):
         y_values = [titik[i][1], titik[i+1][1]]
         plt.plot(x_values, y_values, 'r-')
 
-# Plotting initial control points and intermediate points
-plt.plot([p[0] for p in initial_control_points], [p[1] for p in initial_control_points], 'bo-', label='Control Points') 
-for i in range(num_of_control_points-2):
-    plt.plot([garisbantu[i][0], garisbantu[i+1][0]], [garisbantu[i][1], garisbantu[i+1][1]], 'yo-', markersize=3)
-titik2 = titik.copy()
-deleteganjil(titik2)
-plot_bezier_curve(titik2)
-plt.pause(0.5) 
-plt.clf()
+# # Plotting initial control points and intermediate points
+# plt.plot([p[0] for p in initial_control_points], [p[1] for p in initial_control_points], 'bo-', label='Control Points') 
+# for i in range(num_of_control_points-2):
+#     plt.plot([garisbantu[i][0], garisbantu[i+1][0]], [garisbantu[i][1], garisbantu[i+1][1]], 'yo-', markersize=3)
+# titik2 = titik.copy()
+# deleteganjil(titik2)
+# plot_bezier_curve(titik2)
+# plt.pause(0.5) 
+# plt.clf()
 
 
 # Plotting Bezier curve for each iteration
@@ -135,12 +135,12 @@ for i in range(num_of_iteration-1):
     for i in range(1,len(titik)+len(garisbantu)-j,2):
         titik.insert(i,garisbantu[garban2])
         garban2+=1
-end_time = time.time()
-elapsed_time = end_time - start_time
-print("\n" + str(elapsed_time) + " ms\n")
 # Final Bezier curve
 deleteganjil(titik)
 plot_bezier_curve(titik)
+end = timeit.default_timer()
+elapsed_time = end - start
+print(str(elapsed_time) + " ms\n")
 plt.xlabel('X')
 plt.ylabel('Y')
 plt.title('Final Bezier Curve')

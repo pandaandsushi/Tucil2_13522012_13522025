@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import functions as fn
-import timeit
+import time
 
 class BF():
     def formula(self, num_of_points):
@@ -21,7 +21,7 @@ class BF():
 
     def solvebf(self):
         num_of_control_points,control_points,num_of_iteration = fn.takeinput()
-        start = timeit.default_timer()
+        start = time.time()
         res = []
         t_val = np.linspace(0, 1, num_of_iteration)
 
@@ -43,12 +43,13 @@ class BF():
             plt.plot(x_values, y_values, marker='o', color='blue')
             plt.pause(0.5) 
 
-        end = timeit.default_timer()
-        elapsed_time = end - start
+        end = time.time()
+        elapsed_time = end - start - 0.5*(len(points)-1)
 
         print(str(elapsed_time) + " ms\n")
         # Plot final curve
         x_values = [point[0] for point in points]
         y_values = [point[1] for point in points]
+        plt.text(0.9, -0.1, f"Elapsed Time: {elapsed_time:.2f} ms", fontsize=10, ha='center', transform=plt.gca().transAxes)
         plt.plot(x_values, y_values, marker='o', color='blue')
         plt.show()

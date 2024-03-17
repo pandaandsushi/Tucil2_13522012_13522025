@@ -57,8 +57,20 @@ class Dncfunc():
             y_values = [titik2[i][1], titik2[i+1][1]]
             plt.plot(x_values, y_values, 'r-')
 
-    # method untuk mencari titik-titik yang akan membentuk kurva
-    def mencarititik(self, bag1, bag2, mid1, mid2):
+    # mencari titik-titik kurva dengan rekursif membagi ke bagian-bagian kecil
+    def mencarititik_rekursif(self, bag, mid):
+        if len(bag) <= 5:
+            return self.titikforce(bag,mid)
+        
+        bag1= bag[:len(bag)//2+2]
+        bag2= bag[len(bag)//2:]
+
+        # Rekursi untuk mencari titik-titik tengah di setiap sub-bagian
+        self.mencarititik_rekursif(bag1, mid)
+        self.mencarititik_rekursif(bag2, mid)
+
+    # mencari titik-titik kurva dengan brute force jika panjang list <= 5
+    def titikforce(self,bag1,mid1):
         x = 0
         temp1 = []
         temp2 = []
@@ -66,23 +78,27 @@ class Dncfunc():
         # mencari titik bantu
         for i in range(len(bag1)-1):
             temp1.append(self.midpoint(bag1[x],bag1[x+1]))
-            if(x+1<len(bag2)):
-                temp2.append(self.midpoint(bag2[x],bag2[x+1]))
             x+=1
 
         # mencari titik-titik kurva
         for i in range(len(temp1)-1):
             mid1.append(self.midpoint(temp1[i],temp1[i+1]))
-            if(i+1<len(temp2)):
-                mid2.append(self.midpoint(temp2[i],temp2[i+1]))
 
-        if len(temp1)%1 == 0:
-            mid1.append(self.midpoint(temp1[len(temp1)-1],temp2[0]))
-
-        self.garban = self.garban + len(temp1) + len(temp2)
         # tambah titik bantu tiap bagian ke list garis bantu
-        self.garisbantu.extend(temp1)
-        self.garisbantu.extend(temp2)
+        existing_garisbantu = set(map(tuple, self.garisbantu))
+
+        # Menambahkan elemen-elemen baru dari temp1 dan temp2
+        for point in temp1:
+            if tuple(point) not in existing_garisbantu:
+                self.garisbantu.append(point)
+                existing_garisbantu.add(tuple(point))
+                self.garban = self.garban + 1
+
+        for point in temp2:
+            if tuple(point) not in existing_garisbantu:
+                self.garisbantu.append(point)
+                existing_garisbantu.add(tuple(point))
+                self.garban = self.garban + 1
 
     # method untuk melakukan insert titik kurva di akhir iterasi
     def inserttitik(self, mid1, mid2, length, garban2):
@@ -139,14 +155,15 @@ class Dncfunc():
             # DEVIDE AND CONQUER !!
             # membagi kurva menjadi dua bagian
             length = len(self.titik)//2
-            bag1= self.titik[:length+1]
+            bag1= self.titik[:length+2]
             bag2= self.titik[length:]
             garban2 = self.garban
             # mencatat titik tengah di tiap bagian
             mid1 = []
             mid2 = []
 
-            self.mencarititik(bag1,bag2,mid1,mid2)
+            self.mencarititik_rekursif(bag1, mid1)
+            self.mencarititik_rekursif(bag2, mid2)
             self.deleteganjil(self.titik) # menghapus elemen ganjil dari list -> akan di rewrite dengan titik baru
             self.inserttitik(mid1,mid2,length,garban2)
 

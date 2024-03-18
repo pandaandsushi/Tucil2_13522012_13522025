@@ -1,0 +1,3 @@
+num_of_control_points = 3
+[(10,10),(0,0),(-5,15)] 
+num_of_iteration = 5

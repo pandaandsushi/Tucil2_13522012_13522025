@@ -1,3 +1,0 @@
-num_of_control_points = 3
-control_points = [(-2,-4),(0,0.3),(-1.5,-1)]
-num_of_iteration = 4

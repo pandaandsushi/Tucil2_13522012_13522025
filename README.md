@@ -26,9 +26,9 @@ Create Bézier Curves with Midpoint Algorithm Based on Divide and Conquer and Br
 - Open a code editor, for now we use VSCode
 - Navigate to the main.py file in the src folder.
 - Run the code with the arrow button top right of the screen, or use `Ctrl + Alt + N`
-- Choose the desired algorithm to use Divide and Conquer or Brute Force 
 
 ## How to Use 🪄
+- Choose between Divide and Conquer (1) or Brute Force (2)
 - Enter the number of control points
 - Enter every point coordinates 
 - Enter iteration number

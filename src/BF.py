@@ -40,7 +40,7 @@ class BF():
             plt.ylabel('Y')
             plt.title('Final Bezier Curve')
             plt.plot([p[0] for p in control_points], [p[1] for p in control_points], 'ro-', label='Control Points') 
-            plt.plot(x_values, y_values, marker='o', color='blue')
+            plt.plot(x_values, y_values, marker='o', color='blue',markersize=2)
             plt.pause(0.5) 
 
         end = time.time()
@@ -51,5 +51,5 @@ class BF():
         x_values = [point[0] for point in points]
         y_values = [point[1] for point in points]
         plt.text(0.9, -0.1, f"Elapsed Time: {elapsed_time:.2f} ms", fontsize=10, ha='center', transform=plt.gca().transAxes)
-        plt.plot(x_values, y_values, marker='o', color='blue')
+        plt.plot(x_values, y_values, marker='o', color='blue',markersize=2)
         plt.show()

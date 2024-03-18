@@ -21,7 +21,7 @@ class BF():
 
     def solvebf(self):
         num_of_control_points,control_points,num_of_iteration = fn.takeinput()
-        start = time.time()
+        start = time.perf_counter()
         res = []
         titik = 2**num_of_iteration+1 + (2**(num_of_iteration-1))*(num_of_control_points-3)
         t_val = np.linspace(0, 1, titik)
@@ -29,10 +29,8 @@ class BF():
         for i in range (len(t_val)):
             res.append(self.inbetween(t_val[i],control_points))
 
-        # Draw the curve
-        plt.figure()
         points = res
-        end = time.time()
+        end = time.perf_counter()
         elapsed_time = end - start 
 
         # Iterate through the points then plot the curve
@@ -51,6 +49,6 @@ class BF():
         # Plot final curve
         x_values = [point[0] for point in points]
         y_values = [point[1] for point in points]
-        plt.text(0.9, -0.1, f"Elapsed Time: {elapsed_time:.2f} ms", fontsize=10, ha='center', transform=plt.gca().transAxes)
+        plt.text(0.9, -0.1, f"Elapsed Time: {elapsed_time:.4f} ms", fontsize=10, ha='center', transform=plt.gca().transAxes)
         plt.plot(x_values, y_values, marker='o', color='blue',markersize=2)
         plt.show()

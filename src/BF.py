@@ -23,7 +23,8 @@ class BF():
         num_of_control_points,control_points,num_of_iteration = fn.takeinput()
         start = time.time()
         res = []
-        t_val = np.linspace(0, 1, num_of_iteration)
+        titik = 2**num_of_iteration+1 + (2**(num_of_iteration-1))*(num_of_control_points-3)
+        t_val = np.linspace(0, 1, titik)
 
         for i in range (len(t_val)):
             res.append(self.inbetween(t_val[i],control_points))
@@ -41,10 +42,10 @@ class BF():
             plt.title('Final Bezier Curve')
             plt.plot([p[0] for p in control_points], [p[1] for p in control_points], 'ro-', label='Control Points') 
             plt.plot(x_values, y_values, marker='o', color='blue',markersize=2)
-            plt.pause(0.5) 
+            plt.pause(0.05) 
 
         end = time.time()
-        elapsed_time = end - start - 0.5*(len(points)-1)
+        elapsed_time = end - start - 0.05*(len(points)-1)
 
         print(str(elapsed_time) + " ms\n")
         # Plot final curve

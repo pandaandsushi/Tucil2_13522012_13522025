@@ -134,7 +134,7 @@ class Dncfunc():
     def solvednc(self):
         # getting the inputs
         num_of_control_points,control_points,num_of_iteration = fn.takeinput()
-        start = time.time()
+        start = time.perf_counter()
 
         initial_control_points = control_points.copy()  # Make a copy of the original control points
         self.firstinitiation(control_points) # Make the first initiation (1st iteration)
@@ -161,7 +161,7 @@ class Dncfunc():
             self.titikall.append(titik)
             self.garbanall.append(bantu)
 
-        end = time.time()
+        end = time.perf_counter()
         elapsed_time = end - start 
         print("\n" + str(elapsed_time) + " ms\n")
 

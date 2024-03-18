@@ -1,11 +1,13 @@
 import matplotlib.pyplot as plt
 import functions as fn
-import timeit
+import time
 
 class Dncfunc():
     def __init__(self):
         self.titik = [] # to save all the curve points (red line)
         self.garisbantu = [] # to save the helping points (yellow line)
+        self.titikall = [] # menyimpan titik per iterasi
+        self.garbanall = [] # menyimpan garis bantu per iterasi
         self.garban = 0 # jumlah titik garis bantu
 
     # Find the midpoint between two points 
@@ -35,11 +37,15 @@ class Dncfunc():
             self.titik.append(self.garisbantu[j])
         self.titik.append(control_points[len(control_points)-1])
 
+        titik = self.titik.copy()
+        bantu = self.garisbantu.copy()
+        self.titikall.append(titik)
+        self.garbanall.append(bantu)
 
     # Function to plot Bezier curve
-    def plot_bezier_curve(self, titik, num_of_control_points, initial_control_points):
+    def plot_bezier_curve(self, titik, garisbantu, num_of_control_points, initial_control_points):
         # mengcopy titik dan menghapus elemen ganjil untuk menyisakan titik kurva saja
-        titik2 = titik.copy()
+        titik2 = titik
         self.deleteganjil(titik2)
 
         plt.grid(True)
@@ -47,15 +53,16 @@ class Dncfunc():
         # garban awal
         awal = num_of_control_points-2
         for i in range(awal):
-            plt.plot([self.garisbantu[i][0], self.garisbantu[i+1][0]], [self.garisbantu[i][1], self.garisbantu[i+1][1]], 'yo-', markersize=3)
+            plt.plot([garisbantu[i][0], garisbantu[i+1][0]], [garisbantu[i][1], garisbantu[i+1][1]], 'yo-', markersize=3)
         # garban setelah iterasi pertama
-        for i in range(awal+1,len(self.garisbantu)-1,2):
-            plt.plot([self.garisbantu[i][0], self.garisbantu[i+1][0]], [self.garisbantu[i][1], self.garisbantu[i+1][1]], 'yo-', markersize=3)
+        for i in range(awal+1,len(garisbantu)-1,2):
+            plt.plot([garisbantu[i][0], garisbantu[i+1][0]], [garisbantu[i][1], garisbantu[i+1][1]], 'yo-', markersize=3)
         # menggambar titik kurva
         for i in range(len(titik2)-1):
             x_values = [titik2[i][0], titik2[i+1][0]]
             y_values = [titik2[i][1], titik2[i+1][1]]
             plt.plot(x_values, y_values, 'r-')
+            plt.pause(0.05) 
 
     # mencari titik-titik kurva dengan rekursif membagi ke bagian-bagian kecil
     def mencarititik_rekursif(self, bag, mid):
@@ -126,32 +133,13 @@ class Dncfunc():
     def solvednc(self):
         # getting the inputs
         num_of_control_points,control_points,num_of_iteration = fn.takeinput()
-        start = timeit.default_timer()
+        start = time.time()
 
         initial_control_points = control_points.copy()  # Make a copy of the original control points
         self.firstinitiation(control_points) # Make the first initiation (1st iteration)
 
-        # Plotting initial control points and intermediate points
-        plt.plot([p[0] for p in initial_control_points], [p[1] for p in initial_control_points], 'bo-', label='Control Points') 
-        for i in range(num_of_control_points-2):
-            plt.plot([self.garisbantu[i][0], self.garisbantu[i+1][0]], [self.garisbantu[i][1], self.garisbantu[i+1][1]], 'yo-', markersize=3)
-        
-        # melakukan plot hasil kurva
-        self.plot_bezier_curve(self.titik, num_of_control_points, initial_control_points)
-        plt.pause(0.5) 
-        plt.clf()
-
         # Make Bezier curve for each iteration
         for i in range(num_of_iteration-1):
-            # Plotting Bezier curve for each iteration
-            self.plot_bezier_curve(self.titik,num_of_control_points,initial_control_points)
-            plt.xlabel('X')
-            plt.ylabel('Y')
-            plt.title('Iterasi Titik-titik')
-            plt.legend()
-            plt.pause(0.5) 
-            plt.clf()  # Clear plot for the next iteration
-
             # DEVIDE AND CONQUER !!
             # membagi kurva menjadi dua bagian
             length = len(self.titik)//2
@@ -167,12 +155,22 @@ class Dncfunc():
             self.deleteganjil(self.titik) # menghapus elemen ganjil dari list -> akan di rewrite dengan titik baru
             self.inserttitik(mid1,mid2,length,garban2)
 
-        end = timeit.default_timer()
-        elapsed_time = end - start - 0.5*(num_of_iteration-1) # dikurangi waktu pause buat show plot
+            titik = self.titik.copy()
+            bantu = self.garisbantu.copy()
+            self.titikall.append(titik)
+            self.garbanall.append(bantu)
+
+        end = time.time()
+        elapsed_time = end - start 
         print("\n" + str(elapsed_time) + " ms\n")
-        # Final Bezier curve
-        self.plot_bezier_curve(self.titik,num_of_control_points,initial_control_points)
-        plt.text(0.9, -0.1, f"Elapsed Time: {elapsed_time:.2f} ms", fontsize=10, ha='center', transform=plt.gca().transAxes)
+
+        # Final Bezier curver
+        for i in range(len(self.garbanall)):
+            plt.gca().clear()
+            self.plot_bezier_curve(self.titikall[i],self.garbanall[i],num_of_control_points,initial_control_points)
+            plt.pause(0.5) 
+
+        plt.text(0.9, -0.1, f"Elapsed Time: {elapsed_time:.5f} ms", fontsize=10, ha='center', transform=plt.gca().transAxes)
         plt.xlabel('X')
         plt.ylabel('Y')
         plt.title('Final Bezier Curve')

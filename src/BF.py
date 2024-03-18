@@ -32,6 +32,9 @@ class BF():
         # Draw the curve
         plt.figure()
         points = res
+        end = time.time()
+        elapsed_time = end - start 
+
         # Iterate through the points then plot the curve
         for i in range(1, len(points)):
             x_values = [points[j][0] for j in range(i+1)]
@@ -43,9 +46,6 @@ class BF():
             plt.plot([p[0] for p in control_points], [p[1] for p in control_points], 'ro-', label='Control Points') 
             plt.plot(x_values, y_values, marker='o', color='blue',markersize=2)
             plt.pause(0.05) 
-
-        end = time.time()
-        elapsed_time = end - start - 0.05*(len(points)-1)
 
         print(str(elapsed_time) + " ms\n")
         # Plot final curve

@@ -127,8 +127,9 @@ class Dncfunc():
 
         j = garban2
         for i in range(1,len(self.titik)+len(self.garisbantu)-j,2):
-            self.titik.insert(i,self.garisbantu[garban2])
-            garban2+=1
+            if(garban2<len(self.garisbantu)):
+                self.titik.insert(i,self.garisbantu[garban2])
+                garban2+=1
 
     def solvednc(self):
         # getting the inputs

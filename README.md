@@ -13,6 +13,7 @@
 * [How To Use](#how-to-use-🪄)
 
 ## Description 👾
+<img src="/img/1.png/">
 Create Bézier Curves with Midpoint Algorithm Based on Divide and Conquer and Brute Force
 
 ## Requirements 🫧
